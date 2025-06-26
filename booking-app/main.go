@@ -5,24 +5,39 @@ import (
 	"strings"
 )
 
+// a map to hold error codes and messages for names and emails
+var nameErrorMap = map[int]string{
+	0: "",
+	1: "Name should at least be 2 characters",
+	2: "Name must not contain any special characters",
+}
+
+var emailErrorMap = map[int]string{
+	0: "",
+	1: "Email must contain '@' character",
+}
+
 func greetUsers(conferenceName string, remainingTickets int, conferenceTickets uint) {
-	fmt.Printf("Welcome to %v Ticket Booking Sytem.", conferenceName)
+	fmt.Printf("Welcome to %v Ticket Booking Sytem. ", conferenceName)
 	fmt.Printf("We have %d ticket/s remaining out of %d tickets.\n", remainingTickets, conferenceTickets)
 }
 
-func isValidName(name string) bool {
+func isValidName(name string) int {
 	// name must have atleast 2 characters
 	// name must not contain any special characters
 	if len(name) < 2 {
-		return false
+		return 1
 	} else if strings.ContainsAny(name, "~`!@#$%^&*()_+-=1234567890|}{[]\\'\";:?/>.<,}") {
-		return false
+		return 2
 	}
-	return true
+	return 0
 }
 
-func isValidEmail(email string) bool {
-	return strings.Contains(email, "@")
+func isValidEmail(email string) int {
+	if !strings.Contains(email, "@") {
+		return 1
+	}
+	return 0
 }
 
 func main() {
@@ -47,18 +62,22 @@ func main() {
 		// First name and last name
 		fmt.Print("Please enter your first name: ")
 		fmt.Scan(&firstName)
+		if isValidName(firstName) != 0 {
+			fmt.Printf("Invalid first name. %s\n", nameErrorMap[isValidName(firstName)])
+			continue
+		}
 		fmt.Print("Please enter your last name: ")
 		fmt.Scan(&lastName)
-		if !(isValidName(firstName) && isValidName(lastName)) {
-			fmt.Println("First and last name should be at least 2 characters long\nand must not contain and special characters.")
+		if isValidName(lastName) != 0 {
+			fmt.Printf("Invalid last name. %s\n", nameErrorMap[isValidName(lastName)])
 			continue
 		}
 
 		// email
 		fmt.Print("Please enter your email: ")
 		fmt.Scan(&email)
-		if !isValidEmail(email) {
-			fmt.Println("Invalid email.")
+		if isValidEmail(email) != 0 {
+			fmt.Printf("Invalid email. %s\n", emailErrorMap[isValidEmail(email)])
 			continue
 		}
 
