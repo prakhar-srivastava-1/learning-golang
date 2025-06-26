@@ -1,2 +1,2 @@
 # learning-golang
-A journey to get started on the Golang journey 😊
+Getting started on the Golang journey 😊
