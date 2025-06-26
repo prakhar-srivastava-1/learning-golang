@@ -1,5 +1,9 @@
+// all go code should belong to a package
 package main
 
+// imports come at top
+// for multiple imports use ()
+// each line will contain one packet
 import (
 	"fmt"
 	"strings"
@@ -17,11 +21,18 @@ var emailErrorMap = map[int]string{
 	1: "Email must contain '@' character",
 }
 
+// greetUsers prints a few welcome messages for the user
+// conferenceName (string) - Name of the conference
+// remainingTickets (int) - Number of conference tickets remaining
+// conferenceTickets (int) - Total number of conference tickets in the beginning
 func greetUsers(conferenceName string, remainingTickets int, conferenceTickets uint) {
 	fmt.Printf("Welcome to %v Ticket Booking Sytem. ", conferenceName)
 	fmt.Printf("We have %d ticket/s remaining out of %d tickets.\n", remainingTickets, conferenceTickets)
 }
 
+// isValidName checks if the name string is valid
+// name (string) - Name input from user
+// returns int - Error code; 0 if no errors
 func isValidName(name string) int {
 	// name must have atleast 2 characters
 	// name must not contain any special characters
@@ -33,6 +44,9 @@ func isValidName(name string) int {
 	return 0
 }
 
+// isValidEmail checks if the email string is valid
+// email (string) - Email input from user
+// returns int - Error code; 0 if no errors
 func isValidEmail(email string) int {
 	if !strings.Contains(email, "@") {
 		return 1
@@ -40,11 +54,16 @@ func isValidEmail(email string) int {
 	return 0
 }
 
+// main function
 func main() {
+	// constants
 	const conferenceName = "Go Conference"
 	const conferenceTickets uint = 50
+
+	// variable to track remaining tickets in any point in time
 	var remainingTickets = 50
 
+	// variables to grab user inputs
 	var firstName string
 	var lastName string
 	var email string
@@ -56,6 +75,7 @@ func main() {
 	// slice to hold first names of all bookings
 	firstNames := []string{}
 
+	// infinite loop to keep booking tickets
 	for {
 		greetUsers(conferenceName, remainingTickets, conferenceTickets)
 
@@ -96,6 +116,7 @@ func main() {
 
 		// book tickets
 		bookings = append(bookings, firstName+" "+lastName)
+		// update ticket count
 		remainingTickets -= userTickets
 		fmt.Printf("Dear %s, you have successfully booked %d tickets. Details will be shared with you shortly.\n", firstName, userTickets)
 
@@ -103,6 +124,7 @@ func main() {
 		if remainingTickets == 0 {
 			fmt.Println("We are now out of tickets. See you in the next conference.")
 			// print first names of all users who have booked tickets
+			// '_' is used to ignore any variable
 			for _, booking := range bookings {
 				// names gets [firstName, lastName]
 				names := strings.Fields(booking)
