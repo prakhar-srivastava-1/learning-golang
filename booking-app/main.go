@@ -54,6 +54,22 @@ func isValidEmail(email string) int {
 	return 0
 }
 
+// printFirstNames returns the first names of all users who booked tickets
+// bookings ([]string) - All ticket bookings
+// returns ([]string) - First names of all users
+func printFirstNames(bookings []string) []string {
+	// slice to hold first names of all bookings
+	firstNames := []string{}
+	// print first names of all users who have booked tickets
+	// '_' is used to ignore any variable
+	for _, booking := range bookings {
+		// names gets [firstName, lastName]
+		names := strings.Fields(booking)
+		firstNames = append(firstNames, names[0])
+	}
+	return firstNames
+}
+
 // main function
 func main() {
 	// constants
@@ -72,8 +88,6 @@ func main() {
 
 	// slice to track bookings
 	bookings := []string{}
-	// slice to hold first names of all bookings
-	firstNames := []string{}
 
 	// infinite loop to keep booking tickets
 	for {
@@ -123,14 +137,7 @@ func main() {
 		// check if there are any tickets remaining
 		if remainingTickets == 0 {
 			fmt.Println("We are now out of tickets. See you in the next conference.")
-			// print first names of all users who have booked tickets
-			// '_' is used to ignore any variable
-			for _, booking := range bookings {
-				// names gets [firstName, lastName]
-				names := strings.Fields(booking)
-				firstNames = append(firstNames, names[0])
-			}
-			fmt.Printf("People who have booked tickets: %v\n", firstNames)
+			fmt.Printf("People who have booked tickets: %v\n", printFirstNames(bookings))
 			break
 		}
 	}
