@@ -75,6 +75,10 @@ func printFirstNames(bookings []string) []string {
 	return firstNames
 }
 
+// bookTickets books tickets for a user
+// remainingTickets (int) - Number of tickets remaining
+// bookings ([]string) - Slice of all ticket booking transactions
+// returns ([]string, int) - Updated slice of bookings and number of remaining tickets
 func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
 	// variables to grab user inputs
 	var firstName string
