@@ -75,7 +75,7 @@ func printFirstNames(bookings []string) []string {
 	return firstNames
 }
 
-func bookTickets(remainingTickets int, conferenceTickets int, bookings []string) ([]string, int) {
+func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
 	// variables to grab user inputs
 	var firstName string
 	var lastName string
@@ -164,7 +164,7 @@ func main() {
 		// switch is viable alternative for if-else-if ladder
 		switch operationChoice {
 		case 1:
-			bookings, remainingTickets = bookTickets(remainingTickets, conferenceTickets, bookings)
+			bookings, remainingTickets = bookTickets(remainingTickets, bookings)
 		case 2:
 			fmt.Printf("List of bookings: %v\n", bookings)
 		case 3:
