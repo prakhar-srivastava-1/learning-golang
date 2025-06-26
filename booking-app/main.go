@@ -35,6 +35,55 @@ func greetUsers(conferenceName string, remainingTickets int, conferenceTickets u
 	fmt.Println(HR)
 }
 
+// getUserInputs gets all the data required for booking ticket/s
+// returns (string, string, string, string, int) - User's first and last names, email, country and number of tickets
+func getUserInputs() (string, string, string, string, int) {
+	// variables to grab all user inputs
+	var firstName string
+	var lastName string
+	var email string
+	var country string
+	var userTickets int
+
+	// First name and last name
+	fmt.Print("Please enter your first name: ")
+	fmt.Scan(&firstName)
+	fmt.Print("Please enter your last name: ")
+	fmt.Scan(&lastName)
+
+	// email
+	fmt.Print("Please enter your email: ")
+	fmt.Scan(&email)
+
+	// country
+	fmt.Print("Please country of conference (Singapore/London/India): ")
+	fmt.Scan(&country)
+
+	// tickets
+	fmt.Print("Please enter the number of tickets you want to book: ")
+	fmt.Scan(&userTickets)
+
+	return firstName, lastName, email, country, userTickets
+}
+
+// validateUserInputs validates the entries from the user
+// firstName (string) - User's first name
+// lastName (string) - User's last name
+// email (string) - User's email
+// returns (string) - Error message; empty string if all good
+func validateUserInputs(firstName string, lastName string, email string) string {
+	if isValidName(firstName) != 0 {
+		return nameErrorMap[isValidName(firstName)]
+	}
+	if isValidName(lastName) != 0 {
+		return nameErrorMap[isValidName(lastName)]
+	}
+	if isValidEmail(email) != 0 {
+		return emailErrorMap[isValidEmail(email)]
+	}
+	return ""
+}
+
 // isValidName checks if the name string is valid
 // name (string) - Name input from user
 // returns int - Error code; 0 if no errors
@@ -80,43 +129,16 @@ func printFirstNames(bookings []string) []string {
 // bookings ([]string) - Slice of all ticket booking transactions
 // returns ([]string, int) - Updated slice of bookings and number of remaining tickets
 func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
-	// variables to grab user inputs
-	var firstName string
-	var lastName string
-	var email string
-	var country string
-	var userTickets int
+	// get all inputs
+	firstName, lastName, email, country, userTickets := getUserInputs()
 
-	// First name and last name
-	fmt.Print("Please enter your first name: ")
-	fmt.Scan(&firstName)
-	if isValidName(firstName) != 0 {
-		fmt.Printf("Invalid first name. %s\n", nameErrorMap[isValidName(firstName)])
-		return bookings, remainingTickets
-	}
-	fmt.Print("Please enter your last name: ")
-	fmt.Scan(&lastName)
-	if isValidName(lastName) != 0 {
-		fmt.Printf("Invalid last name. %s\n", nameErrorMap[isValidName(lastName)])
+	// validate form input
+	if validateUserInputs(firstName, lastName, email) != "" {
+		fmt.Printf("Invalid user input: %s", validateUserInputs(firstName, lastName, email))
 		return bookings, remainingTickets
 	}
 
-	// email
-	fmt.Print("Please enter your email: ")
-	fmt.Scan(&email)
-	if isValidEmail(email) != 0 {
-		fmt.Printf("Invalid email. %s\n", emailErrorMap[isValidEmail(email)])
-		return bookings, remainingTickets
-	}
-
-	// country
-	fmt.Print("Please country of conference (Singapore/London/India): ")
-	fmt.Scan(&country)
-
-	// tickets
-	fmt.Print("Please enter the number of tickets you want to book: ")
-	fmt.Scan(&userTickets)
-
+	// check if there are sufficient tickets remaining for this booking
 	if remainingTickets < userTickets {
 		fmt.Printf("Sorry! We only have %d ticket/s remaining.\n", remainingTickets)
 		return bookings, remainingTickets
@@ -126,7 +148,7 @@ func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
 	bookings = append(bookings, firstName+" "+lastName)
 	// update ticket count
 	remainingTickets -= userTickets
-	fmt.Printf("Dear %s, you have successfully booked %d tickets. Details will be shared with you shortly.\n", firstName, userTickets)
+	fmt.Printf("Dear %s, you have successfully booked %d tickets for %s conference. Details will be shared with you shortly on %s.\n", firstName, userTickets, country, email)
 
 	return bookings, remainingTickets
 }
