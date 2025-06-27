@@ -4,6 +4,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -44,13 +45,13 @@ func isValidEmail(email string) int {
 }
 
 // getUserInputs gets all the data required for booking ticket/s
-// returns (string, string, string, string, int) - User's first and last names, email, country and number of tickets
+// returns (string, string, string, string, int) - User's first and last names, email, venue and number of tickets
 func getUserInputs() (string, string, string, string, int) {
 	// variables to grab all user inputs
 	var firstName string
 	var lastName string
 	var email string
-	var country string
+	var venue string
 	var userTickets int
 
 	// First name and last name
@@ -63,15 +64,15 @@ func getUserInputs() (string, string, string, string, int) {
 	fmt.Print("Please enter your email: ")
 	fmt.Scan(&email)
 
-	// country
-	fmt.Print("Please country of conference (Singapore/London/India): ")
-	fmt.Scan(&country)
+	// venue
+	fmt.Print("Please enter venue of conference (Singapore/London/Bengaluru): ")
+	fmt.Scan(&venue)
 
 	// tickets
 	fmt.Print("Please enter the number of tickets you want to book: ")
 	fmt.Scan(&userTickets)
 
-	return firstName, lastName, email, country, userTickets
+	return firstName, lastName, email, venue, userTickets
 }
 
 // validateUserInputs validates the entries from the user
@@ -109,15 +110,15 @@ func greetUsers(conferenceName string, remainingTickets int, conferenceTickets u
 // printFirstNames returns the first names of all users who booked tickets
 // bookings ([]string) - All ticket bookings
 // returns ([]string) - First names of all users
-func printFirstNames(bookings []string) []string {
+func printFirstNames(bookings []map[string]string) []string {
 	// slice to hold first names of all bookings
 	firstNames := []string{}
 	// print first names of all users who have booked tickets
 	// '_' is used to ignore any variable
 	for _, booking := range bookings {
 		// names gets [firstName, lastName]
-		names := strings.Fields(booking)
-		firstNames = append(firstNames, names[0])
+		firstName := booking["firstName"]
+		firstNames = append(firstNames, firstName)
 	}
 	return firstNames
 }
@@ -126,9 +127,19 @@ func printFirstNames(bookings []string) []string {
 // remainingTickets (int) - Number of tickets remaining
 // bookings ([]string) - Slice of all ticket booking transactions
 // returns ([]string, int) - Updated slice of bookings and number of remaining tickets
-func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
+func bookTickets(remainingTickets int, bookings []map[string]string) ([]map[string]string, int) {
 	// get all inputs
-	firstName, lastName, email, country, userTickets := getUserInputs()
+	firstName, lastName, email, venue, userTickets := getUserInputs()
+
+	// create a map for storing all user details
+	// alternate syntax - var transaction = make(map[string]string)
+	var transaction = map[string]string{
+		"firstName": firstName,
+		"lastName":  lastName,
+		"email":     email,
+		"venue":     venue,
+		"tickets":   strconv.FormatInt(int64(userTickets), 10),
+	}
 
 	// validate form input
 	if validateUserInputs(firstName, lastName, email) != "" {
@@ -143,10 +154,10 @@ func bookTickets(remainingTickets int, bookings []string) ([]string, int) {
 	}
 
 	// book tickets
-	bookings = append(bookings, firstName+" "+lastName)
+	bookings = append(bookings, transaction)
 	// update ticket count
 	remainingTickets -= userTickets
-	fmt.Printf("Dear %s, you have successfully booked %d tickets for %s conference. Details will be shared with you shortly on %s.\n", firstName, userTickets, country, email)
+	fmt.Printf("Dear %s, you have successfully booked %d tickets for %s conference. Details will be shared with you shortly on %s.\n", firstName, userTickets, venue, email)
 
 	return bookings, remainingTickets
 }
