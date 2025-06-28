@@ -22,7 +22,8 @@ func main() {
 
 	// slice to track bookings
 	// alternate syntax - var bookings = make([]map[string]string)
-	bookings := []map[string]string{}
+	// bookings := []map[string]string{}
+	var bookings = []UserData{}
 
 	// infinite loop to keep booking tickets
 	for {

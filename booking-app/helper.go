@@ -4,9 +4,22 @@ package main
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
+	"time"
 )
+
+// create a struct to hold user data
+// type - creates a custom data type
+// UserData - name of the custom data type
+// struct - since this is a collection of attributes
+// informally, strut ~ class
+type UserData struct {
+	firstName       string
+	lastName        string
+	email           string
+	venue           string
+	numberOfTickets uint8
+}
 
 // a map to hold error codes and messages for names and emails
 var nameErrorMap = map[int]string{
@@ -110,15 +123,15 @@ func greetUsers(conferenceName string, remainingTickets int, conferenceTickets u
 // printFirstNames returns the first names of all users who booked tickets
 // bookings ([]string) - All ticket bookings
 // returns ([]string) - First names of all users
-func printFirstNames(bookings []map[string]string) []string {
+func printFirstNames(bookings []UserData) []string {
 	// slice to hold first names of all bookings
 	firstNames := []string{}
 	// print first names of all users who have booked tickets
 	// '_' is used to ignore any variable
 	for _, booking := range bookings {
 		// names gets [firstName, lastName]
-		firstName := booking["firstName"]
-		firstNames = append(firstNames, firstName)
+		// firstName := booking["firstName"]
+		firstNames = append(firstNames, booking.firstName)
 	}
 	return firstNames
 }
@@ -127,18 +140,27 @@ func printFirstNames(bookings []map[string]string) []string {
 // remainingTickets (int) - Number of tickets remaining
 // bookings ([]string) - Slice of all ticket booking transactions
 // returns ([]string, int) - Updated slice of bookings and number of remaining tickets
-func bookTickets(remainingTickets int, bookings []map[string]string) ([]map[string]string, int) {
+func bookTickets(remainingTickets int, bookings []UserData) ([]UserData, int) {
 	// get all inputs
 	firstName, lastName, email, venue, userTickets := getUserInputs()
 
 	// create a map for storing all user details
 	// alternate syntax - var transaction = make(map[string]string)
-	var transaction = map[string]string{
-		"firstName": firstName,
-		"lastName":  lastName,
-		"email":     email,
-		"venue":     venue,
-		"tickets":   strconv.FormatInt(int64(userTickets), 10),
+	// var transaction = map[string]string{
+	// 	"firstName": firstName,
+	// 	"lastName":  lastName,
+	// 	"email":     email,
+	// 	"venue":     venue,
+	// 	"tickets":   strconv.FormatInt(int64(userTickets), 10),
+	// }
+
+	// instead of map, create use UserData struct
+	var userData = UserData{
+		firstName:       firstName,
+		lastName:        lastName,
+		email:           email,
+		venue:           venue,
+		numberOfTickets: uint8(userTickets),
 	}
 
 	// validate form input
@@ -154,10 +176,19 @@ func bookTickets(remainingTickets int, bookings []map[string]string) ([]map[stri
 	}
 
 	// book tickets
-	bookings = append(bookings, transaction)
+	bookings = append(bookings, userData)
 	// update ticket count
 	remainingTickets -= userTickets
 	fmt.Printf("Dear %s, you have successfully booked %d tickets for %s conference. Details will be shared with you shortly on %s.\n", firstName, userTickets, venue, email)
+	sendTicket(uint(userTickets), firstName, lastName, email)
 
 	return bookings, remainingTickets
+}
+
+func sendTicket(userTickets uint, firstName string, lastName string, email string) {
+	time.Sleep(10 * time.Second)
+	var ticketMessage = fmt.Sprintf("%d tickets for %v %v", userTickets, firstName, lastName)
+	fmt.Println("###########################################################")
+	fmt.Printf("Sending tickets:\n%v to email address %v\n", ticketMessage, email)
+	fmt.Println("###########################################################")
 }
