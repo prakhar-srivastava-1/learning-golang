@@ -6,7 +6,11 @@ package main
 // each line will contain one packet
 import (
 	"fmt"
+	"sync"
 )
+
+// WaitGroup
+var wg = sync.WaitGroup{}
 
 // main function
 func main() {
@@ -67,4 +71,6 @@ func main() {
 			break
 		}
 	}
+	// ensures any email go-routine completes before main() exits
+	wg.Wait()
 }

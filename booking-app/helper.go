@@ -8,6 +8,12 @@ import (
 	"time"
 )
 
+// global constants
+const (
+	HR        = "==============================================================================================="
+	TICKET_HR = "###########################################################"
+)
+
 // create a struct to hold user data
 // type - creates a custom data type
 // UserData - name of the custom data type
@@ -106,9 +112,6 @@ func validateUserInputs(firstName string, lastName string, email string) string 
 	return ""
 }
 
-// global constants
-const HR = "==============================================================================================="
-
 // greetUsers prints a few welcome messages for the user
 // conferenceName (string) - Name of the conference
 // remainingTickets (int) - Number of conference tickets remaining
@@ -180,15 +183,28 @@ func bookTickets(remainingTickets int, bookings []UserData) ([]UserData, int) {
 	// update ticket count
 	remainingTickets -= userTickets
 	fmt.Printf("Dear %s, you have successfully booked %d tickets for %s conference. Details will be shared with you shortly on %s.\n", firstName, userTickets, venue, email)
-	sendTicket(uint(userTickets), firstName, lastName, email)
+	// this function simulates email sending
+	// this is blocking code
+	// to make it in non-blocking mode
+	// we run it as a go-routine
+	// add a wait group to ensure main function waits for this thread to complete
+	wg.Add(1)
+	go sendTicket(uint(userTickets), firstName, lastName, email)
 
 	return bookings, remainingTickets
 }
 
+// sendTicket simulates sending of the tickets to user
+// userTickets (uint) - Number of tickets booked
+// firstName (string) - First name of the user
+// lastName (string) - Last name of the user
+// email (string) - Email of the user
 func sendTicket(userTickets uint, firstName string, lastName string, email string) {
 	time.Sleep(10 * time.Second)
 	var ticketMessage = fmt.Sprintf("%d tickets for %v %v", userTickets, firstName, lastName)
-	fmt.Println("###########################################################")
+	fmt.Println(TICKET_HR)
 	fmt.Printf("Sending tickets:\n%v to email address %v\n", ticketMessage, email)
-	fmt.Println("###########################################################")
+	fmt.Println(TICKET_HR)
+	// go-routine has completed so decrease the go-routine count in wait group
+	wg.Done()
 }
