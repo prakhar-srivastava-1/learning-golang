@@ -26,4 +26,7 @@ func main() {
 	// ex-7
 	fmt.Print("Exercise 7: ")
 	sameLineDeclaration()
+	// ex-8
+	fmt.Print("Exercise 8: ")
+	typeSizes()
 }
