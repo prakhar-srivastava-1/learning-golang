@@ -20,4 +20,7 @@ func main() {
 	// ex-5
 	fmt.Print("Exercise 5: ")
 	shortDeclaration()
+	// ex-6
+	fmt.Print("Exercise 6: ")
+	typeInference()
 }
