@@ -23,4 +23,7 @@ func main() {
 	// ex-6
 	fmt.Print("Exercise 6: ")
 	typeInference()
+	// ex-7
+	fmt.Print("Exercise 7: ")
+	sameLineDeclaration()
 }
