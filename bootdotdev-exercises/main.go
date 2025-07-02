@@ -2,6 +2,7 @@ package main
 
 import "fmt"
 
+// package level constant
 const HR = "==================================================================================="
 
 func main() {
@@ -47,5 +48,9 @@ func main() {
 	// ex-10
 	fmt.Println("Exercise 10")
 	computedConstant()
+	fmt.Println(HR)
+	// ex-11
+	fmt.Println("Exercise 11")
+	formatString()
 	fmt.Println(HR)
 }
