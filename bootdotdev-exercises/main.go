@@ -57,4 +57,8 @@ func main() {
 	fmt.Println("Exercise 12")
 	conditionals()
 	fmt.Println(HR)
+	// ex-13
+	fmt.Println("Exercise 13")
+	callConcat()
+	fmt.Println(HR)
 }
