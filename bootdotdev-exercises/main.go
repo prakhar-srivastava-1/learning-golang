@@ -44,4 +44,8 @@ func main() {
 	fmt.Println("Exercise 9")
 	twoConstants()
 	fmt.Println(HR)
+	// ex-10
+	fmt.Println("Exercise 10")
+	computedConstant()
+	fmt.Println(HR)
 }
