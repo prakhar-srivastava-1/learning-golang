@@ -61,4 +61,8 @@ func main() {
 	fmt.Println("Exercise 13")
 	callConcat()
 	fmt.Println(HR)
+	// ex-14
+	fmt.Println("Exercise 14")
+	passByValue()
+	fmt.Println(HR)
 }
