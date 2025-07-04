@@ -73,4 +73,8 @@ func main() {
 	fmt.Println("Exercise 16")
 	namedReturnValues()
 	fmt.Println(HR)
+	// ex-17
+	fmt.Println("Exercise 17")
+	implicitNamedReturns()
+	fmt.Println(HR)
 }
