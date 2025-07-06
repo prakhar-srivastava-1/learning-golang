@@ -81,4 +81,8 @@ func main() {
 	fmt.Println("Exercise 18")
 	structInGo()
 	fmt.Println(HR)
+	// ex-19
+	fmt.Println("Exercise 19")
+	nestedStruct()
+	fmt.Println(HR)
 }
