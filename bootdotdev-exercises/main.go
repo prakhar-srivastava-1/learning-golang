@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 // package level constant
-const HR = "==================================================================================="
+const HR = "********************************************************************************"
 
 func main() {
 	fmt.Println("Running main()")
@@ -76,5 +76,9 @@ func main() {
 	// ex-17
 	fmt.Println("Exercise 17")
 	implicitNamedReturns()
+	fmt.Println(HR)
+	// ex-18
+	fmt.Println("Exercise 18")
+	structInGo()
 	fmt.Println(HR)
 }
