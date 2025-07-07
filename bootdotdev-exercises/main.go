@@ -85,4 +85,8 @@ func main() {
 	fmt.Println("Exercise 19")
 	nestedStruct()
 	fmt.Println(HR)
+	// ex-20
+	fmt.Println("Exercise 20")
+	embeddedStruct()
+	fmt.Println(HR)
 }
